@@ -8,7 +8,7 @@ import os
 os.system("color")
 
 # Version actual del programa
-VERSION = "2.0"
+VERSION = "2.1"
 
 # Enlaces a los repositorios
 UPDATER_REPO = "https://api.github.com/repos/christopher-pedraza/NAEVYS-updater/releases/latest"
