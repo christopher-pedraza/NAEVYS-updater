@@ -3,6 +3,10 @@
 # Libreria necesaria para hacer peticiones a paginas web
 import requests
 
+# Libreria que se usara para permitir los colores en la terminal
+import os
+os.system("color")
+
 # Version actual del programa
 VERSION = "2.0"
 
