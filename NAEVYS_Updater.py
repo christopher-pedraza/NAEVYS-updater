@@ -8,7 +8,7 @@ import os
 os.system("color")
 
 # Version actual del programa
-VERSION = "2.1"
+VERSION = "3.0"
 
 # Enlaces a los repositorios
 UPDATER_REPO = "https://api.github.com/repos/christopher-pedraza/NAEVYS-updater/releases/latest"
@@ -22,6 +22,25 @@ CYAN = '\033[96m'
 GREEN = '\x1b[1;32;40m'
 NORMAL = '\033[0m'
 RED = '\033[91m'
+TITLE = '\x1b[6;36;40m'
+
+# Aplica color que alterna brillo (brilla..deja de brillar..brilla) al titulo
+print(TITLE)
+
+# Texto creado con ayuda de https://www.messletters.com/en/big-text/
+# usando el estilo alligator2
+print("===============================================================================")
+print(":::    ::: :::::::::  :::::::::      :::     ::::::::::: :::::::::: :::::::::  ")
+print(":+:    :+: :+:    :+: :+:    :+:   :+: :+:       :+:     :+:        :+:    :+: ")
+print("+:+    +:+ +:+    +:+ +:+    +:+  +:+   +:+      +:+     +:+        +:+    +:+ ")
+print("+#+    +:+ +#++:++#+  +#+    +:+ +#++:++#++:     +#+     +#++:++#   +#++:++#:  ")
+print("+#+    +#+ +#+        +#+    +#+ +#+     +#+     +#+     +#+        +#+    +#+ ")
+print("#+#    #+# #+#        #+#    #+# #+#     #+#     #+#     #+#        #+#    #+# ")
+print(" ########  ###        #########  ###     ###     ###     ########## ###    ### ")
+print("===============================================================================")
+
+# Aplica el estilo normal para quitar el brillo al resto de los textos
+print(NORMAL)
 
 # Obtiene el nombre (numero de version) del release mas reciente
 current_version = requests.get(UPDATER_REPO).json()["name"]
@@ -31,30 +50,40 @@ if (current_version==VERSION):
 	# Obtener el archivo JSON del ultimo release del repositorio
 	response = requests.get(NAEVYS_REPO).json()
 
-	# Crea una lista con los datos de los assets (archivos del release)
-	list = response["assets"]
+	# Se pregunta si se quiere descargar la nueva version
+	print(RED + "\nThe latest version available of NAEVYS is '" +
+		response["name"] + "'. Do you want to download it (y/n)? " +
+		NORMAL, end="")
+	ans = input()
 
-	# Especifica al usuario la version que se esta actualizando
-	print(CYAN + "\n\n   ~~~ NAEVYS Version '" + response["name"] + "' ~~~\n" + NORMAL)
+	# Si el usuario desea descargar la nueva version
+	if (ans == "y"):
 
-	# Recorre la lista de los assets
-	for asset in list:
-		# Despliega el nombre del archivo
-		print("Downloading '" + BLUE + asset["name"] + NORMAL + "'" + NORMAL, end=" .")
-		# Obtiene el archivo a partir del enlace del asset
-		file_dir = requests.get(asset["browser_download_url"])
-		print(".", end="")
-		# Crea el archivo
-		open(asset["name"], "wb").write(file_dir.content)
-		print(". ", end="")
-		print(GREEN + "Finished." + NORMAL)
+		# Crea una lista con los datos de los assets (archivos del release)
+		list = response["assets"]
 
-	# Espera un input para que no se cierre la terminal
-	input(NORMAL + "\nPress <Enter> to continue...")
+		# Especifica al usuario la version que se esta actualizando
+		print(CYAN + "\n\n   ~~~ NAEVYS Version '" + response["name"] + "' ~~~\n" + NORMAL)
+
+		# Recorre la lista de los assets
+		for asset in list:
+			# Despliega el nombre del archivo
+			print("Downloading '" + BLUE + asset["name"] + NORMAL + "'" + NORMAL, end=" .")
+			# Obtiene el archivo a partir del enlace del asset
+			file_dir = requests.get(asset["browser_download_url"])
+			print(".", end="")
+			# Crea el archivo
+			open(asset["name"], "wb").write(file_dir.content)
+			print(". ", end="")
+			print(GREEN + "Finished." + NORMAL)
+
+		# Espera un input para que no se cierre la terminal
+		input(NORMAL + "\nPress <Enter> to continue...")
 
 # Si las versiones no concuerda, ofrecer descargar el updater
 else:
-	print(RED + "\n\nA new version of the updater is available. " +
+	# Se pregunta si se quiere descargar la nueva version
+	print(RED + "\nA new version of the updater is available. " +
 	 "Do you want to download it (y/n)? " + NORMAL, end="")
 	ans = input()
 
@@ -64,7 +93,7 @@ else:
 		response = requests.get(UPDATER_REPO).json()
 
 		# Especifica al usuario la version que se esta actualizando
-		print(CYAN + "\n   ~~~ Updater Version '" + response["name"] + "' ~~~\n" + NORMAL)
+		print(CYAN + "\n\n   ~~~ Updater Version '" + response["name"] + "' ~~~\n" + NORMAL)
 
 		# Crea una lista con los datos de los assets (archivos del release)
 		list = response["assets"]
@@ -86,4 +115,3 @@ else:
 
 		# Espera un input para que no se cierre la terminal
 		input(NORMAL + "\nPress <Enter> to continue...")
-	
